@@ -1,4 +1,4 @@
-# 草稿
+# smart-classroom-misc
 
 ## 首次启动
 
