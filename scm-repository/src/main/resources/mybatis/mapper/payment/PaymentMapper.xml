@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smart.classroom.misc.repository.mapper.payment.PaymentMapper">
+
+    <resultMap id="BaseResultMap"
+               extends="com.smart.classroom.misc.repository.mapper.payment.PaymentBaseMapper.BaseResultMap"
+               type="com.smart.classroom.misc.repository.orm.payment.PaymentDO">
+    </resultMap>
+
+    <sql id="AllColumns">
+        <include refid="com.smart.classroom.misc.repository.mapper.payment.PaymentBaseMapper.AllColumns"/>
+    </sql>
+
+    <select id="queryByOrderNo" resultMap="BaseResultMap">
+        SELECT
+        <include refid="AllColumns"/>
+        FROM scm_payment
+        WHERE order_no = #{orderNo}
+        LIMIT 1
+    </select>
+
+
+
+    <update id="updateStatus">
+        UPDATE scm_payment
+        SET
+
+            update_time = current_timestamp() ,
+            status = #{status}
+        WHERE id = #{paymentId}
+    </update>
+
+
+</mapper>

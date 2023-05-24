@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>smart-classroom-misc</artifactId>
+        <groupId>com.smart.classroom</groupId>
+        <version>1.0.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>scm-infrastructure</artifactId>
+
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+    </properties>
+
+
+    <dependencies>
+
+        <!-- *********************依赖应用模块 start********************* -->
+        <dependency>
+            <groupId>com.smart.classroom</groupId>
+            <artifactId>scm-domain</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.smart.classroom</groupId>
+            <artifactId>scm-utility</artifactId>
+        </dependency>
+
+        <!-- *********************依赖应用模块 end********************* -->
+
+
+
+        <!-- ********************* 中间件依赖相关 - 开始********************* -->
+        <!-- nacos注册中心 -->
+        <dependency>
+            <groupId>com.alibaba.nacos</groupId>
+            <artifactId>nacos-client</artifactId>
+        </dependency>
+
+        <!-- dubbo rpc框架-->
+        <dependency>
+            <groupId>org.apache.dubbo</groupId>
+            <artifactId>dubbo-spring-boot-starter</artifactId>
+        </dependency>
+
+        <!--RocketMQ消息队列-->
+        <dependency>
+            <groupId>org.apache.rocketmq</groupId>
+            <artifactId>rocketmq-client-java</artifactId>
+        </dependency>
+        <!-- ********************* 中间件依赖相关 - 结束********************* -->
+
+
+
+
+
+        <!-- ********************* 外部RPC服务依赖 start********************* -->
+
+        <!--来自订阅系统的接口-->
+        <dependency>
+            <groupId>com.smart.classroom</groupId>
+            <artifactId>scs-facade</artifactId>
+        </dependency>
+
+        <!-- ********************* 外部RPC服务依赖 start********************* -->
+
+    </dependencies>
+
+</project>

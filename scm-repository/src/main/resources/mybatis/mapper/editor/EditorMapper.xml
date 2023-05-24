@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smart.classroom.misc.repository.mapper.editor.EditorMapper">
+
+    <resultMap id="BaseResultMap"
+               extends="com.smart.classroom.misc.repository.mapper.editor.EditorBaseMapper.BaseResultMap"
+               type="com.smart.classroom.misc.repository.orm.editor.EditorDO">
+    </resultMap>
+
+    <sql id="AllColumns">
+        <include refid="com.smart.classroom.misc.repository.mapper.editor.EditorBaseMapper.AllColumns"/>
+    </sql>
+
+
+    <select id="queryByUsername" resultMap="BaseResultMap">
+        SELECT
+        <include refid="AllColumns"/>
+        FROM scm_editor
+        WHERE username = #{username}
+        LIMIT 1
+    </select>
+
+
+    <select id="queryTopByWorkNo" resultMap="BaseResultMap">
+        SELECT
+        <include refid="AllColumns"/>
+        FROM scm_editor
+        WHERE work_no = #{workNo}
+        LIMIT 1
+    </select>
+
+</mapper>

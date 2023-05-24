@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>smart-classroom-misc</artifactId>
+        <groupId>com.smart.classroom</groupId>
+        <version>1.0.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>scm-controller</artifactId>
+
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+    </properties>
+
+
+    <dependencies>
+
+        <!-- *********************依赖应用模块 start********************* -->
+
+        <dependency>
+            <groupId>com.smart.classroom</groupId>
+            <artifactId>scm-facade-impl</artifactId>
+        </dependency>
+
+        <!-- *********************依赖应用模块 end********************* -->
+
+        <!-- ********************* 基础框架依赖 start********************* -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!-- ********************* 基础框架依赖 start********************* -->
+
+
+
+    </dependencies>
+
+
+
+
+</project>

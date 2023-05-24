@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="${artwork.baseMapperClassFullName}">
+
+    <resultMap id="BaseResultMap" type="${artwork.entityFullName}">
+#foreach($column in $artwork.columns)
+#if($column.primaryKey)
+        <id column="${column.name}" jdbcType="${column.jdbcType}" property="${column.lowerCamelName}"/>
+#else
+        <result column="${column.name}" jdbcType="${column.jdbcType}" property="${column.lowerCamelName}"/>
+#end
+#end
+    </resultMap>
+
+    <sql id="AllColumns">
+        #foreach($column in $artwork.columns)${column.safeName()}#if($foreach.hasNext), #end#end
+
+    </sql>
+
+    <insert id="insert" parameterType="${artwork.entityFullName}" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO ${artwork.tableName} (
+        #foreach($column in $artwork.columns)#if(!$column.primaryKey)${column.safeName()}#if($foreach.hasNext), #end#end#end
+ )
+        VALUES (
+
+#foreach($column in $artwork.columns)
+        #if(!$column.primaryKey)#{${column.lowerCamelName},jdbcType=${column.jdbcType}}#if($foreach.hasNext) ,#end#end
+
+#end
+        )
+    </insert>
+
+
+    <insert id="insertBatch" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+
+        INSERT INTO ${artwork.tableName} (
+        #foreach($column in $artwork.columns)#if(!$column.primaryKey)${column.safeName()}#if($foreach.hasNext), #end#end#end
+ )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+#foreach($column in $artwork.columns)
+#if(!$column.primaryKey)
+            #{item.${column.lowerCamelName},jdbcType=${column.jdbcType}}#if($foreach.hasNext) ,
+#end
+#end
+#end
+ )
+        </foreach>
+    </insert>
+
+    <delete id="deleteById" parameterType="java.lang.Long">
+
+        DELETE FROM ${artwork.tableName}
+        WHERE id = #{id,jdbcType=BIGINT}
+
+    </delete>
+
+
+    <delete id="deleteByIds" parameterType="java.util.List">
+        DELETE FROM ${artwork.tableName}
+        WHERE
+        <choose>
+            <when test="list==null || list.isEmpty()">
+                1 = 0
+            </when>
+            <otherwise>
+                id IN
+                <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+                    #{id}
+                </foreach>
+            </otherwise>
+        </choose>
+    </delete>
+
+
+    <update id="update" parameterType="${artwork.entityFullName}">
+        UPDATE ${artwork.tableName}
+        SET
+
+#foreach($column in $artwork.columns)
+    #if(!$column.primaryKey)
+        ${column.safeName()} = #if($column.name=='update_time')current_timestamp()#else#{${column.lowerCamelName},jdbcType=${column.jdbcType}}#end#if($foreach.hasNext) ,#end
+
+    #end
+#end
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="queryById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT
+        <include refid="AllColumns"/>
+        FROM ${artwork.tableName}
+        WHERE id = #{id,jdbcType=BIGINT}
+    </select>
+
+
+    <select id="queryByIds" parameterType="java.util.List" resultMap="BaseResultMap">
+        SELECT
+        <include refid="AllColumns"/>
+        FROM ${artwork.tableName}
+        WHERE
+        <choose>
+            <when test="list==null || list.isEmpty()">
+                1 = 0
+            </when>
+            <otherwise>
+                id IN
+                <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+                    #{id}
+                </foreach>
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="page" resultMap="BaseResultMap">
+
+        SELECT
+
+        <include refid="AllColumns"/>
+
+        FROM ${artwork.tableName}
+
+        <where>
+#foreach($column in $artwork.filterLikeColumns)
+            <if test="${column.nullTestString()}">
+                AND ${column.safeName()} LIKE CONCAT('%',#{${column.lowerCamelName}},'%')
+            </if>
+#end
+#foreach($column in $artwork.filterEqualColumns)
+            <if test="${column.nullTestString()}">
+                AND ${column.safeName()} = #{${column.lowerCamelName}}
+            </if>
+#end
+
+        </where>
+
+        <choose>
+#foreach($column in $artwork.filterOrderColumns)
+
+            <when test="order${column.upperCamelName} != null and order${column.upperCamelName}.name() == 'ASC'">
+                ORDER BY ${column.safeName()} ASC
+            </when>
+            <when test="order${column.upperCamelName} != null and order${column.upperCamelName}.name() == 'DESC'">
+                ORDER BY ${column.safeName()} DESC
+            </when>
+
+#end
+            <otherwise></otherwise>
+        </choose>
+
+
+    </select>
+
+
+</mapper>

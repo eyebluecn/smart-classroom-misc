@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>pom</packaging>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.7.10</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <groupId>com.smart.classroom</groupId>
+    <artifactId>smart-classroom-misc</artifactId>
+    <version>1.0.0</version>
+    <name>smart-classroom-misc</name>
+    <description>smart-classroom-misc</description>
+    <properties>
+        <java.version>1.8</java.version>
+    </properties>
+
+    <modules>
+        <module>scm-application</module>
+        <module>scm-controller</module>
+        <module>scm-domain</module>
+        <module>scm-facade</module>
+        <module>scm-facade-impl</module>
+        <module>scm-infrastructure</module>
+        <module>scm-main</module>
+        <module>scm-repository</module>
+        <module>scm-testsuit</module>
+        <module>scm-utility</module>
+    </modules>
+
+
+    <!-- 声明项目所有maven依赖，这里只声明，子模块去引用 -->
+    <dependencyManagement>
+        <dependencies>
+
+            <!-- *********************子模块 start********************* -->
+            <dependency>
+                <groupId>com.smart.classroom</groupId>
+                <artifactId>scm-application</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.smart.classroom</groupId>
+                <artifactId>scm-controller</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.smart.classroom</groupId>
+                <artifactId>scm-domain</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.smart.classroom</groupId>
+                <artifactId>scm-facade</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.smart.classroom</groupId>
+                <artifactId>scm-facade-impl</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.smart.classroom</groupId>
+                <artifactId>scm-infrastructure</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.smart.classroom</groupId>
+                <artifactId>scm-main</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.smart.classroom</groupId>
+                <artifactId>scm-repository</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.smart.classroom</groupId>
+                <artifactId>scm-testsuit</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.smart.classroom</groupId>
+                <artifactId>scm-utility</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+
+            <!-- *********************子模块 end********************* -->
+
+
+
+            <!-- ********************* 中间件依赖相关 - 开始 ********************* -->
+            <!-- nacos注册中心 -->
+            <dependency>
+                <groupId>com.alibaba.nacos</groupId>
+                <artifactId>nacos-client</artifactId>
+                <version>2.2.1</version>
+            </dependency>
+
+            <!-- dubbo rpc框架-->
+            <dependency>
+                <groupId>org.apache.dubbo</groupId>
+                <artifactId>dubbo-spring-boot-starter</artifactId>
+                <version>3.1.8</version>
+            </dependency>
+
+
+            <!--RocketMQ消息队列-->
+            <dependency>
+                <groupId>org.apache.rocketmq</groupId>
+                <artifactId>rocketmq-client-java</artifactId>
+                <version>5.0.5</version>
+            </dependency>
+
+            <!-- ********************* 中间件依赖相关 - 结束 ********************* -->
+
+
+            <!-- ********************* 外部RPC服务依赖 start********************* -->
+
+            <!--来自订阅系统的接口-->
+            <dependency>
+                <groupId>com.smart.classroom</groupId>
+                <artifactId>scs-facade</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+
+            <!-- ********************* 外部RPC服务依赖 start********************* -->
+
+
+
+
+
+            <!-- #########和数据库相关的包 - 开始######### -->
+
+
+            <!--mybatis自动配置-->
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>2.1.1</version>
+            </dependency>
+
+            <!--mybatis分页-->
+            <dependency>
+                <groupId>com.github.pagehelper</groupId>
+                <artifactId>pagehelper</artifactId>
+                <version>5.1.8</version>
+            </dependency>
+
+            <!--mybatis-->
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis</artifactId>
+                <version>3.5.0</version>
+            </dependency>
+
+            <!--mysql驱动-->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>5.1.47</version>
+            </dependency>
+
+
+            <!--数据库连接池-->
+            <dependency>
+                <groupId>com.zaxxer</groupId>
+                <artifactId>HikariCP</artifactId>
+                <version>3.4.5</version>
+            </dependency>
+
+            <!-- #########和数据库相关的包 - 结束######### -->
+
+            <!-- #########工具包 - 开始######### -->
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>3.8.1</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>2.6</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>1.4</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>commons-collections</groupId>
+                <artifactId>commons-collections</artifactId>
+                <version>3.2.2</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>27.0.1-jre</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>org.apache.velocity</groupId>
+                <artifactId>velocity</artifactId>
+                <version>1.7</version>
+            </dependency>
+
+            <!--Spring 加密的核心库-->
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-core</artifactId>
+                <version>5.1.1.RELEASE</version>
+            </dependency>
+
+            <!-- #########工具包 - 结束######### -->
+        </dependencies>
+
+
+    </dependencyManagement>
+
+
+</project>

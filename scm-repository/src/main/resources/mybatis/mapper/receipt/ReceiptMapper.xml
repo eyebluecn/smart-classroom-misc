@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smart.classroom.misc.repository.mapper.receipt.ReceiptMapper">
+
+    <resultMap id="BaseResultMap"
+               extends="com.smart.classroom.misc.repository.mapper.receipt.ReceiptBaseMapper.BaseResultMap"
+               type="com.smart.classroom.misc.repository.orm.receipt.ReceiptDO">
+    </resultMap>
+
+    <sql id="AllColumns">
+        <include refid="com.smart.classroom.misc.repository.mapper.receipt.ReceiptBaseMapper.AllColumns"/>
+    </sql>
+
+</mapper>

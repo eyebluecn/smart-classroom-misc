@@ -1,0 +1,47 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+actor       读者         as reader
+participant 订阅系统      as subscription
+database    专栏信息数据库  as db
+participant 专栏信息系统      as column
+participant 金融系统      as finance
+collections    三方支付公司    as pay
+reader -> column : 挑选专栏，获取专栏信息
+column --> reader : 返回
+reader -> subscription : 发起订阅请求
+activate subscription
+subscription -> column : 查询专栏状态
+column --> subscription : 返回
+subscription -> db : 创建订单
+db --> subscription : 返回
+subscription -> finance : 发起支付请求
+finance -> pay : 发起支付请求
+pay --> finance : 返回
+finance --> subscription : 返回
+subscription --> reader : 返回
+deactivate subscription
+reader -> pay : 付款
+pay --> reader : 返回
+alt #dddddd 回调情境
+    pay -> finance : 回调通知支付结果
+    finance -> subscription : 消息通知支付结果
+
+else #white 反查情境
+    reader -> subscription : 上报支付成功
+    subscription -> finance : 查询支付单状态
+    finance -> pay : 查询支付单状态
+    pay --> finance : 返回
+    finance --> subscription : 返回
+end
+
+
+subscription -> db : 创建订阅关系
+activate subscription
+db --> subscription : 返回
+subscription -> reader : 通知用户订阅成功
+deactivate subscription
+
+@enduml

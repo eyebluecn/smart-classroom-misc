@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- 收到关闭delay s后关闭日志 可以防止日志丢失 -->
+    <shutdownHook class="ch.qos.logback.core.hook.DelayingShutdownHook">
+        <delay>1000</delay>
+    </shutdownHook>
+
+    <!-- This listener will print the status in StatusManager to console-->
+    <statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener"/>
+
+    <!-- 文件输出格式 -->
+    <property name="PATTERN"
+              value="%d{yyyy/MM/dd-HH:mm:ss} %level [%thread] - %class{36}.%M %L [%X{traceId}] - %msg%n"/>
+
+    <!-- 每天产生一个文件 存储到文件中去 -->
+    <property name="APPLICATION_FILE" value="${log.path}/application.log"/>
+    <appender name="APPLICATION_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 文件路径 -->
+        <file>${APPLICATION_FILE}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 文件名称 -->
+            <fileNamePattern>${APPLICATION_FILE}.%d{yyyy-MM-dd}.%i</fileNamePattern>
+            <!-- 文件最大保存历史数量 -->
+            <maxHistory>7</maxHistory>
+            <maxFileSize>50MB</maxFileSize>
+            <totalSizeCap>2GB</totalSizeCap>
+        </rollingPolicy>
+
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>${PATTERN}</pattern>
+        </layout>
+
+        <!--info及以上的级别会输出到文件中-->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+    </appender>
+
+    <!--显示在控制台，debug及以上的级别会显示在控制台-->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="com.smart.classroom" level="info"/>
+    <logger name="org.springframework" level="info"/>
+    <logger name="org.apache" level="info"/>
+
+    <root level="info">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="APPLICATION_LOG"/>
+    </root>
+
+</configuration>

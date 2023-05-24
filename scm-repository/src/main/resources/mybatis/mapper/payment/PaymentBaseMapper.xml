@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smart.classroom.misc.repository.mapper.payment.PaymentBaseMapper">
+
+    <resultMap id="BaseResultMap" type="com.smart.classroom.misc.repository.orm.payment.PaymentDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="order_no" jdbcType="VARCHAR" property="orderNo"/>
+        <result column="method" jdbcType="VARCHAR" property="method"/>
+        <result column="third_transaction_no" jdbcType="VARCHAR" property="thirdTransactionNo"/>
+        <result column="amount" jdbcType="BIGINT" property="amount"/>
+        <result column="status" jdbcType="VARCHAR" property="status"/>
+    </resultMap>
+
+    <sql id="AllColumns">
+        id, create_time, update_time, order_no, method, third_transaction_no, amount, status
+    </sql>
+
+    <insert id="insert" parameterType="com.smart.classroom.misc.repository.orm.payment.PaymentDO" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO scm_payment (
+        create_time, update_time, order_no, method, third_transaction_no, amount, status )
+        VALUES (
+
+        
+        #{createTime,jdbcType=TIMESTAMP} ,
+        #{updateTime,jdbcType=TIMESTAMP} ,
+        #{orderNo,jdbcType=VARCHAR} ,
+        #{method,jdbcType=VARCHAR} ,
+        #{thirdTransactionNo,jdbcType=VARCHAR} ,
+        #{amount,jdbcType=BIGINT} ,
+        #{status,jdbcType=VARCHAR}
+        )
+    </insert>
+
+
+    <insert id="insertBatch" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+
+        INSERT INTO scm_payment (
+        create_time, update_time, order_no, method, third_transaction_no, amount, status )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.createTime,jdbcType=TIMESTAMP} ,
+            #{item.updateTime,jdbcType=TIMESTAMP} ,
+            #{item.orderNo,jdbcType=VARCHAR} ,
+            #{item.method,jdbcType=VARCHAR} ,
+            #{item.thirdTransactionNo,jdbcType=VARCHAR} ,
+            #{item.amount,jdbcType=BIGINT} ,
+            #{item.status,jdbcType=VARCHAR} )
+        </foreach>
+    </insert>
+
+    <delete id="deleteById" parameterType="java.lang.Long">
+
+        DELETE FROM scm_payment
+        WHERE id = #{id,jdbcType=BIGINT}
+
+    </delete>
+
+
+    <delete id="deleteByIds" parameterType="java.util.List">
+        DELETE FROM scm_payment
+        WHERE
+        <choose>
+            <when test="list==null || list.isEmpty()">
+                1 = 0
+            </when>
+            <otherwise>
+                id IN
+                <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+                    #{id}
+                </foreach>
+            </otherwise>
+        </choose>
+    </delete>
+
+
+    <update id="update" parameterType="com.smart.classroom.misc.repository.orm.payment.PaymentDO">
+        UPDATE scm_payment
+        SET
+
+                create_time = #{createTime,jdbcType=TIMESTAMP} ,
+                update_time = current_timestamp() ,
+                order_no = #{orderNo,jdbcType=VARCHAR} ,
+                method = #{method,jdbcType=VARCHAR} ,
+                third_transaction_no = #{thirdTransactionNo,jdbcType=VARCHAR} ,
+                amount = #{amount,jdbcType=BIGINT} ,
+                status = #{status,jdbcType=VARCHAR}
+            WHERE id = #{id}
+    </update>
+
+
+    <select id="queryById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT
+        <include refid="AllColumns"/>
+        FROM scm_payment
+        WHERE id = #{id,jdbcType=BIGINT}
+    </select>
+
+
+    <select id="queryByIds" parameterType="java.util.List" resultMap="BaseResultMap">
+        SELECT
+        <include refid="AllColumns"/>
+        FROM scm_payment
+        WHERE
+        <choose>
+            <when test="list==null || list.isEmpty()">
+                1 = 0
+            </when>
+            <otherwise>
+                id IN
+                <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+                    #{id}
+                </foreach>
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="page" resultMap="BaseResultMap">
+
+        SELECT
+
+        <include refid="AllColumns"/>
+
+        FROM scm_payment
+
+        <where>
+            <if test="orderNo != null and orderNo !=''">
+                AND order_no = #{orderNo}
+            </if>
+            <if test="method != null">
+                AND method = #{method}
+            </if>
+            <if test="thirdTransactionNo != null and thirdTransactionNo !=''">
+                AND third_transaction_no = #{thirdTransactionNo}
+            </if>
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+
+        </where>
+
+        <choose>
+
+            <when test="orderCreateTime != null and orderCreateTime.name() == 'ASC'">
+                ORDER BY create_time ASC
+            </when>
+            <when test="orderCreateTime != null and orderCreateTime.name() == 'DESC'">
+                ORDER BY create_time DESC
+            </when>
+
+
+            <when test="orderUpdateTime != null and orderUpdateTime.name() == 'ASC'">
+                ORDER BY update_time ASC
+            </when>
+            <when test="orderUpdateTime != null and orderUpdateTime.name() == 'DESC'">
+                ORDER BY update_time DESC
+            </when>
+
+            <otherwise></otherwise>
+        </choose>
+
+
+    </select>
+
+
+</mapper>

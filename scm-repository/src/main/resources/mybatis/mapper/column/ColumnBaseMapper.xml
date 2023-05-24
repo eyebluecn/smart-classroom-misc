@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smart.classroom.misc.repository.mapper.column.ColumnBaseMapper">
+
+    <resultMap id="BaseResultMap" type="com.smart.classroom.misc.repository.orm.column.ColumnDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="author_id" jdbcType="BIGINT" property="authorId"/>
+        <result column="status" jdbcType="VARCHAR" property="status"/>
+    </resultMap>
+
+    <sql id="AllColumns">
+        id, create_time, update_time, name, author_id, status
+    </sql>
+
+    <insert id="insert" parameterType="com.smart.classroom.misc.repository.orm.column.ColumnDO" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO scm_column (
+        create_time, update_time, name, author_id, status )
+        VALUES (
+
+        
+        #{createTime,jdbcType=TIMESTAMP} ,
+        #{updateTime,jdbcType=TIMESTAMP} ,
+        #{name,jdbcType=VARCHAR} ,
+        #{authorId,jdbcType=BIGINT} ,
+        #{status,jdbcType=VARCHAR}
+        )
+    </insert>
+
+
+    <insert id="insertBatch" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+
+        INSERT INTO scm_column (
+        create_time, update_time, name, author_id, status )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.createTime,jdbcType=TIMESTAMP} ,
+            #{item.updateTime,jdbcType=TIMESTAMP} ,
+            #{item.name,jdbcType=VARCHAR} ,
+            #{item.authorId,jdbcType=BIGINT} ,
+            #{item.status,jdbcType=VARCHAR} )
+        </foreach>
+    </insert>
+
+    <delete id="deleteById" parameterType="java.lang.Long">
+
+        DELETE FROM scm_column
+        WHERE id = #{id,jdbcType=BIGINT}
+
+    </delete>
+
+
+    <delete id="deleteByIds" parameterType="java.util.List">
+        DELETE FROM scm_column
+        WHERE
+        <choose>
+            <when test="list==null || list.isEmpty()">
+                1 = 0
+            </when>
+            <otherwise>
+                id IN
+                <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+                    #{id}
+                </foreach>
+            </otherwise>
+        </choose>
+    </delete>
+
+
+    <update id="update" parameterType="com.smart.classroom.misc.repository.orm.column.ColumnDO">
+        UPDATE scm_column
+        SET
+
+                create_time = #{createTime,jdbcType=TIMESTAMP} ,
+                update_time = current_timestamp() ,
+                name = #{name,jdbcType=VARCHAR} ,
+                author_id = #{authorId,jdbcType=BIGINT} ,
+                status = #{status,jdbcType=VARCHAR}
+            WHERE id = #{id}
+    </update>
+
+
+    <select id="queryById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT
+        <include refid="AllColumns"/>
+        FROM scm_column
+        WHERE id = #{id,jdbcType=BIGINT}
+    </select>
+
+
+    <select id="queryByIds" parameterType="java.util.List" resultMap="BaseResultMap">
+        SELECT
+        <include refid="AllColumns"/>
+        FROM scm_column
+        WHERE
+        <choose>
+            <when test="list==null || list.isEmpty()">
+                1 = 0
+            </when>
+            <otherwise>
+                id IN
+                <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+                    #{id}
+                </foreach>
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="page" resultMap="BaseResultMap">
+
+        SELECT
+
+        <include refid="AllColumns"/>
+
+        FROM scm_column
+
+        <where>
+            <if test="name != null and name !=''">
+                AND name LIKE CONCAT('%',#{name},'%')
+            </if>
+            <if test="authorId != null">
+                AND author_id = #{authorId}
+            </if>
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+
+        </where>
+
+        <choose>
+
+            <when test="orderCreateTime != null and orderCreateTime.name() == 'ASC'">
+                ORDER BY create_time ASC
+            </when>
+            <when test="orderCreateTime != null and orderCreateTime.name() == 'DESC'">
+                ORDER BY create_time DESC
+            </when>
+
+
+            <when test="orderUpdateTime != null and orderUpdateTime.name() == 'ASC'">
+                ORDER BY update_time ASC
+            </when>
+            <when test="orderUpdateTime != null and orderUpdateTime.name() == 'DESC'">
+                ORDER BY update_time DESC
+            </when>
+
+            <otherwise></otherwise>
+        </choose>
+
+
+    </select>
+
+
+</mapper>

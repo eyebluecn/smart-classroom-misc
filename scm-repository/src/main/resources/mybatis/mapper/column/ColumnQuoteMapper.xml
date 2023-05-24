@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smart.classroom.misc.repository.mapper.column.ColumnQuoteMapper">
+
+    <resultMap id="BaseResultMap"
+               extends="com.smart.classroom.misc.repository.mapper.column.ColumnQuoteBaseMapper.BaseResultMap"
+               type="com.smart.classroom.misc.repository.orm.column.ColumnQuoteDO">
+    </resultMap>
+
+    <sql id="AllColumns">
+        <include refid="com.smart.classroom.misc.repository.mapper.column.ColumnQuoteBaseMapper.AllColumns"/>
+    </sql>
+
+
+    <select id="queryByColumnIdAndStatusOk" resultMap="BaseResultMap">
+        SELECT
+        <include refid="AllColumns"/>
+        FROM scm_column_quote
+        WHERE column_id = #{columnId}
+        LIMIT 1
+    </select>
+
+
+</mapper>
